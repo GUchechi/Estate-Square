@@ -1,4 +1,4 @@
-# Firebase Setup For House Marketplace
+# Firebase Setup For ESTATE SQUARE
 
 1. Create Firebase Project
 2. Create "web" app within firebase to get config values"
