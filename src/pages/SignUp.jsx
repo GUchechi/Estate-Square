@@ -5,6 +5,7 @@ import {
   createUserWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
+import { setDoc, doc, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase.config";
 import { ReactComponent as ArrowRightIcon } from "../assets/svg/keyboardArrowRightIcon.svg";
 import visibilityIcon from "../assets/svg/visibilityIcon.svg";
@@ -12,13 +13,12 @@ import visibilityIcon from "../assets/svg/visibilityIcon.svg";
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
+    name: "",
     email: "",
     password: "",
   });
-
-  const navigate = useNavigate();
-
   const { name, email, password } = formData;
+  const navigate = useNavigate();
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -45,7 +45,14 @@ const SignUp = () => {
         displayName: name,
       });
 
+      const formDataCopy = { ...formData };
+      delete formDataCopy.password;
+      formDataCopy.timestamp = serverTimestamp();
+
+      await setDoc(doc(db, "users", user.id), formDataCopy);
+
       navigate("/");
+
     } catch (error) {
       console.log(error);
     }
@@ -69,11 +76,12 @@ const SignUp = () => {
           <input
             type="email"
             className="emailInput"
+            placeholder="Email"
             id="email"
             value={email}
-            placeholder="Email"
             onChange={onChange}
           />
+
           <div className="passwordInputDiv">
             <input
               type={showPassword ? "text" : "password"}
@@ -83,16 +91,19 @@ const SignUp = () => {
               value={password}
               onChange={onChange}
             />
+
             <img
               src={visibilityIcon}
-              alt="Show Password"
+              alt="show password"
               className="showPassword"
               onClick={() => setShowPassword((prevState) => !prevState)}
             />
           </div>
+
           <Link to="/forgot-password" className="forgotPasswordLink">
             Forgot Password
           </Link>
+
           <div className="signUpBar">
             <p className="signUpText">Sign Up</p>
             <button className="signUpButton">
