@@ -1,7 +1,7 @@
 import { React, useState, useEffect, useRef } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import {
-  getStorage,
+  getStorage, 
   ref,
   uploadBytesResumable,
   getDownloadURL,

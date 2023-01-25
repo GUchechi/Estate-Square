@@ -5,6 +5,10 @@ import { getAuth } from "firebase/auth";
 import { db } from "../firebase.config";
 import Spinner from "../components/Spinner";
 import shareIcon from "../assets/svg/shareIcon.svg";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import SwiperCore, { Navigation, Pagination, Scrollbar, A11y } from "swiper";
+SwiperCore.use([Navigation, Pagination, Scrollbar, A11y]);
 
 const Listing = () => {
   const [listing, setListing] = useState(null);
@@ -35,7 +39,19 @@ const Listing = () => {
 
   return (
     <main>
-      {/* Slider */}
+      <Swiper slidesPerView={1} pagination={{ clickable: true }}>
+        {listing.imgUrls.map((url, index) => (
+          <SwiperSlide key={index}>
+            <div
+              className="swiperSlideDiv"
+              style={{
+                background: `url(${listing.imgUrls[index]}) center no-repeat`,
+                backgroundSize: "cover",
+              }}
+            ></div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
 
       <div
         className="shareIconDiv"
@@ -88,7 +104,7 @@ const Listing = () => {
         {auth.currentUser?.uid !== listing.userRef && (
           <Link
             to={`/contact/${listing.userRef}?listingName=${listing.name}`}
-            className='primaryButton'
+            className="primaryButton"
           >
             Contact Landlord
           </Link>
