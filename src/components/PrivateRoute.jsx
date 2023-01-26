@@ -8,7 +8,7 @@ const PrivateRoute = () => {
 
   if (loading) {
     return <Spinner />;
-  }
+  } 
 
   return loggedIn ? <Outlet /> : <Navigate to="/sign-in" />;
 };
