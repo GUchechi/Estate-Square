@@ -70,7 +70,7 @@ function Offers() {
         where("offer", "==", true),
         orderBy("timestamp", "desc"),
         startAfter(lastFetchedListing),
-        limit(1)
+        limit(3)
       );
 
       // Execute query
