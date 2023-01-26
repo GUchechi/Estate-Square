@@ -17,7 +17,7 @@ import ListingItem from "./ListingItem";
 function Category() {
   const [listings, setListings] = useState(null);
   const [loading, setLoading] = useState(true);
-  //   const [lastFetchedListing, setLastFetchedListing] = useState(null)
+  const [lastFetchedListing, setLastFetchedListing] = useState(null);
 
   const params = useParams();
 
@@ -37,6 +37,9 @@ function Category() {
 
         // Execute query
         const querySnap = await getDocs(q);
+
+        const lastVisible = querySnap.docs[querySnap.docs.length - 1];
+        setLastFetchedListing(lastVisible);
 
         const listings = [];
 
@@ -68,11 +71,15 @@ function Category() {
         listingsRef,
         where("type", "==", params.categoryName),
         orderBy("timestamp", "desc"),
-        limit(10)
+        startAfter(lastFetchedListing),
+        limit(1)
       );
 
       // Execute query
       const querySnap = await getDocs(q);
+
+      const lastVisible = querySnap.docs[querySnap.docs.length - 1];
+      setLastFetchedListing(lastVisible);
 
       const listings = [];
 
@@ -115,6 +122,14 @@ function Category() {
               ))}
             </ul>
           </main>
+
+          <br />
+          <br />
+          {lastFetchedListing && (
+            <p className="loadMore" onClick={onFetchMoreListings}>
+              Load More
+            </p>
+          )}
         </>
       ) : (
         <p>No listings for {params.categoryName}</p>
