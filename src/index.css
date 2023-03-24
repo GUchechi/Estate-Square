@@ -214,7 +214,8 @@ button {
 .forgotPasswordLink {
   cursor: pointer;
   color: #2d7de6;
-  
+  font-weight: 600;
+  text-align: right;
 }
 
 .signInBar,
