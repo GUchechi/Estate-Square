@@ -45,7 +45,7 @@ const SignUp = () => {
 
       updateProfile(auth.currentUser, {
         displayName: name,
-      });
+      }); 
 
       const formDataCopy = { ...formData };
       delete formDataCopy.password;
